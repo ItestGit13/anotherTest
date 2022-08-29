@@ -38,7 +38,7 @@ $this->title = 'My Yii Application';
       <td><?php echo $post->category; ?></td>
       <td>
       <span><?= Html::a ('view',['view','id'=>$post->id],['class'=>'btn btn-primary']) ?></span>
-      <span><?= Html::a ('update',['update','id'=>$post->id],['class'=>'btn btn-success']) ?></span>
+      <span><?= Html::a ('update',['/list','id'=>$post->id],['class'=>'btn btn-success']) ?></span>
       <span><?= Html::a ('delete',['delete','id'=>$post->id],['class'=>'btn btn-danger']) ?></span>
     </td>
     </tr>

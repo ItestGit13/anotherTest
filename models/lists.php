@@ -5,9 +5,9 @@ use yii\db\ActiveRecord;
 
 class lists extends ActiveRecord{
 
-    private $title;
-    private $description;
-    private $category;
+    protected $title;
+    protected $description;
+    protected $category;
 
     public function rules()
     {

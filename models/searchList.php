@@ -1,71 +1,93 @@
 <?php
 
-namespace frontend\models;
+
+namespace app\models;
+
 
 use Yii;
+
 use yii\base\Model;
+
 use yii\data\ActiveDataProvider;
-use frontend\models\lists;
+
+use app\models\lists;
+
 
 /**
- * CurrencySearch represents the model behind the search form of `frontend\models\Currency`.
- */
-class CurrencySearch extends Currency
-{
-    // global search field on index page
-    public $globalSearch;
 
-    /**
-     * @inheritdoc
-     */
+ * MenuCategoriesSearch represents the model behind the search form about `app\modules\menus\models\MenuCategories`.
+
+ */
+
+class searchList extends lists
+
+{
+    public $searchModel;
+
     public function rules()
+
     {
+
         return [
-            [['id', 'id'], 'integer'],
-            [['title', 'description', 'category', 'globalSearch'], 'safe'],
+
+            [['id'], 'integer'],
+
+            [['title', 'description','category'], 'safe'],
+
         ];
+
     }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params)
-    {
-        $query = lists::find()->where(['id'=>Yii::$app->user->id]);
 
-        // add conditions that should always apply below
+    public function scenarios()
+
+    {
+
+        // bypass scenarios() implementation in the parent class
+
+        return Model::scenarios();
+
+    }
+
+
+    public function search($params)
+
+    {
+        // print_r($params);
+        // die();
+
+        $query = lists::find();
+
 
         $dataProvider = new ActiveDataProvider([
+
             'query' => $query,
-            'sort' => ['defaultOrder' => ['name' => SORT_ASC]] 
+
         ]);
+
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            
+        if(!$this->validate())
+        {
             return $dataProvider;
         }
 
-        // grid filtering conditions
+
         $query->andFilterWhere([
-            'id' => $this->id,         
+
             'id' => $this->id,
+
         ]);
-    
-        // this conditions are the fields you want the users search in the serach box
-        $query->andFilterWhere([
-            'or',
-            ['like', 'title' , $this->globalSearch],
-            ['like', 'description' , $this->globalSearch],
-            ['like', 'category', $this->globalSearch],
-        ]);         
+
+
+        $query->andFilterWhere(['like', 'title', $this->title])
+
+            ->andFilterWhere(['like', 'description', $this->description]);
+
 
         return $dataProvider;
+
     }
 
 }
